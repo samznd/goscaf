@@ -20,7 +20,7 @@ A command-line interface tool for quickly generating Go web application boilerpl
 
 ### Installation
 ```bash
- go install github.com/samznd/go-boilerplate-cli@latest
+ go install github.com/samznd/goweb@latest
  ```
 
 ## Getting Started.

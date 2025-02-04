@@ -1,4 +1,4 @@
-module github.com/samznd/go-boilerplate-cli
+module github.com/samznd/goweb
 
 go 1.23.4
 

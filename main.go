@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/samznd/go-boilerplate-cli/cmd"
 	"os"
+
+	"github.com/samznd/goweb/cmd"
 
 	"github.com/spf13/cobra"
 )
