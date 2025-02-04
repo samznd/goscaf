@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
-	"go-boilerplate-cli/pkg/utils"
+	"github.com/samznd/go-boilerplate-cli/pkg/utils"
 
 	"github.com/spf13/cobra"
 )
