@@ -46,7 +46,7 @@ var BackendCmd = &cobra.Command{
 		utils.CreateFile(filepath.Join(projectPath, ".env"), envContent)
 
 		fmt.Println("✅ Backend initialized!")
-		installDependencies(projectPath, backend)
+		installDependencies(projectPath, backend, database, orm)
 
 	},
 }
@@ -62,17 +62,56 @@ func runCommand(dir, command string) {
 	}
 }
 
-func installDependencies(projectName, backend string) {
+func installDependencies(projectName, backend string, database string, orm string) {
 	fmt.Println("📦 Initializing Go module...")
 	runCommand(projectName, "go mod init "+projectName)
 
 	fmt.Println("📦 Installing dependencies...")
-	if backend == "fiber" {
+
+	// Install backend framework
+	switch backend {
+	case "fiber":
 		runCommand(projectName, "go get github.com/gofiber/fiber/v2")
-	} else {
+	case "gin":
 		runCommand(projectName, "go get github.com/gin-gonic/gin")
+	case "echo":
+		runCommand(projectName, "go get github.com/labstack/echo/v4")
+	case "chi":
+		runCommand(projectName, "go get github.com/go-chi/chi/v5")
 	}
-	runCommand(projectName, "go get github.com/lib/pq")
+
+	// Install database driver
+	switch database {
+	case "postgres":
+		runCommand(projectName, "go get github.com/lib/pq")
+	case "mysql":
+		runCommand(projectName, "go get github.com/go-sql-driver/mysql")
+	case "sqlite":
+		runCommand(projectName, "go get github.com/mattn/go-sqlite3")
+	case "mongodb":
+		runCommand(projectName, "go get go.mongodb.org/mongo-driver/mongo")
+	}
+
+	// Install ORM if selected
+	switch orm {
+	case "gorm":
+		runCommand(projectName, "go get gorm.io/gorm")
+		// Install GORM database drivers based on selected database
+		switch database {
+		case "postgres":
+			runCommand(projectName, "go get gorm.io/driver/postgres")
+		case "mysql":
+			runCommand(projectName, "go get gorm.io/driver/mysql")
+		case "sqlite":
+			runCommand(projectName, "go get gorm.io/driver/sqlite")
+		}
+	case "ent":
+		runCommand(projectName, "go get entgo.io/ent/cmd/ent")
+	}
+
+	// Install common utilities
+	runCommand(projectName, "go get github.com/joho/godotenv")
+	runCommand(projectName, "go get golang.org/x/crypto")
 
 	fmt.Println("✅ Dependencies installed successfully!")
 }
