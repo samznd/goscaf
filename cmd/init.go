@@ -15,7 +15,6 @@ var InitCmd = &cobra.Command{
 	Short: "Initialize a new Go web application",
 	Run: func(cmd *cobra.Command, args []string) {
 		var projectName, backend, database, orm string
-		var useORM bool
 
 		survey.AskOne(&survey.Input{Message: "What is your project name?"}, &projectName)
 		survey.AskOne(&survey.Select{
@@ -26,9 +25,13 @@ var InitCmd = &cobra.Command{
 			Message: "Choose your database system:",
 			Options: []string{"Postgres", "MySQL", "SQLite"},
 		}, &database)
-		survey.AskOne(&survey.Select{
+
+		// Set default value for orm
+		orm = "none"
+
+		var useORM bool
+		survey.AskOne(&survey.Confirm{
 			Message: "Would you like to use an ORM?",
-			Options: []string{"Yes", "No"},
 		}, &useORM)
 
 		if useORM {

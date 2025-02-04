@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/samznd/goweb/pkg/utils"
 
@@ -16,12 +17,15 @@ var BackendCmd = &cobra.Command{
 	Use:   "backend",
 	Short: "Generate server boilerplate",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 2 {
+		if len(args) < 4 {
 			fmt.Println("❌ Error: Missing arguments")
+			fmt.Printf("Received args: %v\n", args)
 			return
 		}
 
 		projectPath, backend, database, orm := args[0], args[1], args[2], args[3]
+
+		// Create directories
 		directories := []string{
 			"cmd", "config", "internal", "internal/database", "internal/middleware",
 			"internal/models", "internal/repositories", "internal/services",
@@ -29,26 +33,94 @@ var BackendCmd = &cobra.Command{
 		}
 
 		for _, dir := range directories {
-			os.MkdirAll(projectPath+"/"+dir, 0755)
+			fullPath := filepath.Join(projectPath, dir)
+			if err := os.MkdirAll(fullPath, 0755); err != nil {
+				fmt.Printf("Error creating directory %s: %v\n", fullPath, err)
+			}
 		}
 
-		os.MkdirAll(projectPath, os.ModePerm)
-
+		// Generate files
 		mainContent := getMainFile(backend, projectPath)
 		databaseContent := getDatabaseFile(database, orm)
+
+		if databaseContent == "None" {
+			fmt.Printf("Error: Invalid database configuration. Database: %s, ORM: %s\n", database, orm)
+			return
+		}
+
 		envContent := `DB_USER=postgres
-					   DB_PASSWORD=postgres
-					   DB_HOST=localhost
-					   DB_PORT=5432`
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=mydb`
 
-		utils.CreateFile(filepath.Join(projectPath+"/cmd/", "main.go"), mainContent)
-		utils.CreateFile(filepath.Join(projectPath+"/config/", "database.go"), databaseContent)
-		utils.CreateFile(filepath.Join(projectPath, ".env"), envContent)
+		// Create files
+		if err := utils.CreateFile(filepath.Join(projectPath, "cmd", "main.go"), mainContent); err != nil {
+			fmt.Printf("Error creating main.go: %v\n", err)
+		}
+		if err := utils.CreateFile(filepath.Join(projectPath, "config", "database.go"), databaseContent); err != nil {
+			fmt.Printf("Error creating database.go: %v\n", err)
+		}
+		if err := utils.CreateFile(filepath.Join(projectPath, ".env"), envContent); err != nil {
+			fmt.Printf("Error creating .env: %v\n", err)
+		}
 
-		fmt.Println("✅ Backend initialized!")
+		fmt.Println("✅ Backend files generated!")
+
+		// Initialize go.mod and install dependencies
 		installDependencies(projectPath, backend, database, orm)
-
 	},
+}
+
+func installDependencies(projectPath, backend string, database string, orm string) {
+	fmt.Println("📦 Initializing Go module...")
+	runCommand(projectPath, "go mod init "+projectPath)
+
+	fmt.Println("📦 Installing dependencies...")
+
+	// Install backend framework
+	switch strings.ToLower(backend) {
+	case "fiber":
+		runCommand(projectPath, "go get github.com/gofiber/fiber/v2")
+	case "gin":
+		runCommand(projectPath, "go get github.com/gin-gonic/gin")
+	}
+
+	// Install database driver
+	switch strings.ToLower(database) {
+	case "postgres":
+		runCommand(projectPath, "go get github.com/lib/pq")
+	case "mysql":
+		runCommand(projectPath, "go get github.com/go-sql-driver/mysql")
+	case "sqlite":
+		runCommand(projectPath, "go get github.com/mattn/go-sqlite3")
+	}
+
+	// Install ORM if selected
+	switch strings.ToLower(orm) {
+	case "gorm":
+		runCommand(projectPath, "go get gorm.io/gorm")
+		// Install GORM database drivers
+		switch strings.ToLower(database) {
+		case "postgres":
+			runCommand(projectPath, "go get gorm.io/driver/postgres")
+		case "mysql":
+			runCommand(projectPath, "go get gorm.io/driver/mysql")
+		case "sqlite":
+			runCommand(projectPath, "go get gorm.io/driver/sqlite")
+		}
+	case "xorm":
+		runCommand(projectPath, "go get xorm.io/xorm")
+	case "ent":
+		runCommand(projectPath, "go get entgo.io/ent")
+		runCommand(projectPath, "go get entgo.io/ent/cmd/ent")
+	}
+
+	// Install common utilities
+	runCommand(projectPath, "go get github.com/joho/godotenv")
+	runCommand(projectPath, "go get golang.org/x/crypto")
+
+	fmt.Println("✅ Dependencies installed successfully!")
 }
 
 func runCommand(dir, command string) {
@@ -56,62 +128,7 @@ func runCommand(dir, command string) {
 	cmd.Dir = dir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-	err := cmd.Run()
-	if err != nil {
-		fmt.Printf("❌ Error executing command: %s\n", command)
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("❌ Error executing command '%s': %v\n", command, err)
 	}
-}
-
-func installDependencies(projectName, backend string, database string, orm string) {
-	fmt.Println("📦 Initializing Go module...")
-	runCommand(projectName, "go mod init "+projectName)
-
-	fmt.Println("📦 Installing dependencies...")
-
-	// Install backend framework
-	switch backend {
-	case "fiber":
-		runCommand(projectName, "go get github.com/gofiber/fiber/v2")
-	case "gin":
-		runCommand(projectName, "go get github.com/gin-gonic/gin")
-	case "echo":
-		runCommand(projectName, "go get github.com/labstack/echo/v4")
-	case "chi":
-		runCommand(projectName, "go get github.com/go-chi/chi/v5")
-	}
-
-	// Install database driver
-	switch database {
-	case "postgres":
-		runCommand(projectName, "go get github.com/lib/pq")
-	case "mysql":
-		runCommand(projectName, "go get github.com/go-sql-driver/mysql")
-	case "sqlite":
-		runCommand(projectName, "go get github.com/mattn/go-sqlite3")
-	case "mongodb":
-		runCommand(projectName, "go get go.mongodb.org/mongo-driver/mongo")
-	}
-
-	// Install ORM if selected
-	switch orm {
-	case "gorm":
-		runCommand(projectName, "go get gorm.io/gorm")
-		// Install GORM database drivers based on selected database
-		switch database {
-		case "postgres":
-			runCommand(projectName, "go get gorm.io/driver/postgres")
-		case "mysql":
-			runCommand(projectName, "go get gorm.io/driver/mysql")
-		case "sqlite":
-			runCommand(projectName, "go get gorm.io/driver/sqlite")
-		}
-	case "ent":
-		runCommand(projectName, "go get entgo.io/ent/cmd/ent")
-	}
-
-	// Install common utilities
-	runCommand(projectName, "go get github.com/joho/godotenv")
-	runCommand(projectName, "go get golang.org/x/crypto")
-
-	fmt.Println("✅ Dependencies installed successfully!")
 }

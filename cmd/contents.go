@@ -1,6 +1,9 @@
 package cmd
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func getMainFile(backend string, projectName string) string {
 	if backend == "Fiber" {
@@ -52,10 +55,12 @@ func main() {
 }
 
 func getDatabaseFile(database string, orm string) string {
-	if orm != "None" {
+	if strings.ToLower(orm) != "none" {
 		return SetupORM(orm, database)
 	}
-	if database == "Postgres" {
+
+	switch strings.ToLower(database) {
+	case "postgres":
 		return `package database
 
 import (
@@ -100,8 +105,7 @@ func getEnv(key, defaultValue string) string {
     }
     return value
 }`
-	}
-	if database == "MySQL" {
+	case "mysql":
 		return `package database
 
 import (
@@ -137,9 +141,7 @@ func Connect() {
 
     log.Println("✅ Connected to the database successfully!")
 }`
-	}
-
-	if database == "SQLite" {
+	case "sqlite":
 		return `package database
 
 import (
@@ -176,13 +178,19 @@ func getEnv(key, defaultValue string) string {
     }
     return value
 }`
+	default:
+		fmt.Printf("Warning: Unknown database type '%s'\n", database)
+		return "None"
 	}
-	return "None"
 }
 
 func SetupORM(orm string, database string) string {
-	if orm == "GORM" {
-		if database == "Postgres" {
+	ormLower := strings.ToLower(orm)
+	dbLower := strings.ToLower(database)
+
+	if ormLower == "gorm" {
+		switch dbLower {
+		case "postgres":
 			return `package database
 
 import (
@@ -213,8 +221,7 @@ func Connect() {
 
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
-		}
-		if database == "MySQL" {
+		case "mysql":
 			return `package database
 
 import (
@@ -245,8 +252,7 @@ func Connect() {
 
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
-		}
-		if database == "SQLite" {
+		case "sqlite":
 			return `package database
 
 import (
@@ -270,8 +276,9 @@ func Connect() {
     log.Println("✅ Connected to the SQLite database successfully!")
 }`
 		}
-	} else if orm == "XORM" {
-		if database == "Postgres" {
+	} else if ormLower == "xorm" {
+		switch dbLower {
+		case "postgres":
 			return `package database
 
 import (
@@ -306,8 +313,7 @@ func Connect() {
 
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
-		}
-		if database == "MySQL" {
+		case "mysql":
 			return `package database
 
 import (
@@ -342,8 +348,7 @@ func Connect() {
 
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
-		}
-		if database == "SQLite" {
+		case "sqlite":
 			return `package database
 
 import (
@@ -371,8 +376,9 @@ func Connect() {
     log.Println("✅ Connected to the SQLite database successfully!")
 }`
 		}
-	} else if orm == "Ent" {
-		if database == "Postgres" {
+	} else if ormLower == "ent" {
+		switch dbLower {
+		case "postgres":
 			return `package database
 
 import (
@@ -408,8 +414,7 @@ func Connect() {
 
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
-		}
-		if database == "MySQL" {
+		case "mysql":
 			return `package database
 
 import (
@@ -445,8 +450,7 @@ func Connect() {
 
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
-		}
-		if database == "SQLite" {
+		case "sqlite":
 			return `package database
 
 import (
