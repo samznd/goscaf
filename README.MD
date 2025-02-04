@@ -18,9 +18,9 @@ A command-line interface tool for quickly generating Go web application boilerpl
 - Go 1.16 or higher
 - Git
 
-### Install using Go
+### Installation
 ```bash
- go install github.com/yourusername/goweb@latest
+ go install github.com/samznd/goweb@latest
  ```
 
 ## Getting Started.
