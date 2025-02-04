@@ -120,6 +120,13 @@ func installDependencies(projectPath, backend string, database string, orm strin
 	runCommand(projectPath, "go get github.com/joho/godotenv")
 	runCommand(projectPath, "go get golang.org/x/crypto")
 
+	// Fix missing dependencies
+	runCommand(projectPath, "go get github.com/mattn/go-isatty@v0.0.20")
+
+	// Tidy up modules and ensure all dependencies are properly downloaded
+	runCommand(projectPath, "go mod tidy")
+	runCommand(projectPath, "go mod download")
+
 	fmt.Println("✅ Dependencies installed successfully!")
 }
 
