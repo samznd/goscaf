@@ -8,13 +8,6 @@
 
 version: 2
 
-on:
-  push:
-    # run only against tags
-    tags:
-      - "*"
-
-
 builds:
   - env:
       - CGO_ENABLED=0
