@@ -52,6 +52,72 @@ func main() {
     log.Println("🚀 Gin server is running on http://localhost:3000")
     r.Run(":3000")
 }`, projectName)
+	case "echo":
+		return fmt.Sprintf(`package main
+
+import (
+    "net/http"
+    "github.com/labstack/echo/v4"
+    "%s/config"
+)
+
+func main() {
+    config.Connect()
+
+    e := echo.New()
+
+    // Define routes
+    e.GET("/ping", func(c echo.Context) error {
+        return c.JSON(http.StatusOK, map[string]string{"message": "pong"})
+    })
+
+    e.Logger.Fatal(e.Start(":3000"))
+}`, projectName)
+	case "chi":
+		return fmt.Sprintf(`package main
+
+import (
+    "net/http"
+    "github.com/go-chi/chi"
+    "github.com/go-chi/chi/middleware"
+    "%s/config"
+)
+
+func main() {
+    config.Connect()
+
+    r := chi.NewRouter()
+    r.Use(middleware.Logger)
+
+    // Define routes
+    r.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
+        w.Header().Set("Content-Type", "application/json")
+        w.WriteHeader(http.StatusOK)
+        w.Write([]byte(`+"`{\"message\": \"pong\"}`"+`))
+    })
+
+    http.ListenAndServe(":3000", r)
+}`, projectName)
+	case "iris":
+		return fmt.Sprintf(`package main
+
+import (
+    "github.com/kataras/iris/v12"
+    "%s/config"
+)
+
+func main() {
+    config.Connect()
+
+    app := iris.New()
+
+    // Define routes
+    app.Get("/ping", func(ctx iris.Context) {
+        ctx.JSON(iris.Map{"message": "pong"})
+    })
+
+    app.Listen(":3000")
+}`, projectName)
 	default:
 		return ""
 	}

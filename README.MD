@@ -34,7 +34,7 @@ goweb init
 This will start an interactive prompt asking for:
 
 1. Project name
-2. Web framework selection (Fiber/Gin)
+2. Web framework selection (Fiber/Gin/Echo/Chi)
 3. Database system (Postgres/MySQL/SQLite)
 4. ORM preference (Yes/No)
 5. If Yes to ORM, choose between GORM/XORM/Ent
@@ -91,6 +91,18 @@ your-project/
 - High performance
 - Wide community adoption
 
+#### Echo
+- Minimalist web framework
+- High performance
+- Extensible middleware
+- Built-in support for data binding and validation
+
+#### Chi
+- Lightweight, idiomatic web framework
+- Focused on composability and maintainability
+- Efficient router
+- Middleware support
+
 ### Databases
 
 - **PostgreSQL**: Advanced open-source database
@@ -137,7 +149,7 @@ If you have any questions or need help, please:
 
 ## Roadmap
 
-- [ ] Add support for more web frameworks
+- [x] Add support for more web frameworks
 - [ ] Include testing templates
 - [ ] Add Docker configuration
 - [ ] Generate API documentation

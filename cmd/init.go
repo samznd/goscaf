@@ -19,7 +19,7 @@ var InitCmd = &cobra.Command{
 		survey.AskOne(&survey.Input{Message: "What is your project name?"}, &projectName)
 		survey.AskOne(&survey.Select{
 			Message: "Choose your web framework:",
-			Options: []string{"Fiber", "Gin"},
+			Options: []string{"Fiber", "Gin", "Echo", "Chi", "Iris"},
 		}, &backend)
 		survey.AskOne(&survey.Select{
 			Message: "Choose your database system:",

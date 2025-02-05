@@ -89,6 +89,16 @@ func installDependencies(projectPath, backend string, database string, orm strin
 		runCommand(projectPath, "go get github.com/gofiber/fiber/v2")
 	case "gin":
 		runCommand(projectPath, "go get github.com/gin-gonic/gin")
+	case "echo":
+		runCommand(projectPath, "go get github.com/labstack/echo/v4")
+	case "chi":
+		runCommand(projectPath, "go get github.com/go-chi/chi")
+	case "iris":
+		runCommand(projectPath, "go get github.com/kataras/iris/v12")
+
+	default:
+		fmt.Printf("❌ Error: Invalid backend: %s\n", backend)
+		return
 	}
 
 	// Install database driver
@@ -99,6 +109,10 @@ func installDependencies(projectPath, backend string, database string, orm strin
 		runCommand(projectPath, "go get github.com/go-sql-driver/mysql")
 	case "sqlite":
 		runCommand(projectPath, "go get github.com/mattn/go-sqlite3")
+
+	default:
+		fmt.Printf("❌ Error: Invalid database: %s\n", database)
+		return
 	}
 
 	// Install ORM if selected
@@ -113,12 +127,19 @@ func installDependencies(projectPath, backend string, database string, orm strin
 			runCommand(projectPath, "go get gorm.io/driver/mysql")
 		case "sqlite":
 			runCommand(projectPath, "go get gorm.io/driver/sqlite")
+
+		default:
+			fmt.Printf("❌ Error: Invalid database: %s\n", database)
+			return
 		}
 	case "xorm":
 		runCommand(projectPath, "go get xorm.io/xorm")
 	case "ent":
 		runCommand(projectPath, "go get entgo.io/ent")
 		runCommand(projectPath, "go get entgo.io/ent/cmd/ent")
+	default:
+		fmt.Printf("❌ Error: Invalid ORM: %s\n", orm)
+		return
 	}
 
 	// Install common utilities
@@ -142,5 +163,6 @@ func runCommand(dir, command string) {
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("❌ Error executing command '%s': %v\n", command, err)
+		return
 	}
 }
