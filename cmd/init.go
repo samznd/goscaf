@@ -39,7 +39,6 @@ var InitCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Set default value for orm
 		orm = "none"
 
 		var useORM bool
@@ -63,7 +62,6 @@ var InitCmd = &cobra.Command{
 		projectPath := filepath.Join(".", projectName)
 		os.MkdirAll(projectPath, os.ModePerm)
 
-		// Backend
 		BackendCmd.Run(cmd, []string{projectPath, backend, database, orm})
 
 		fmt.Println("✅ Project initialized successfully!")

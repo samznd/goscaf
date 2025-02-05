@@ -15,7 +15,7 @@ import (
 // backendCmd represents the backend command
 var BackendCmd = &cobra.Command{
 	Use:   "backend",
-	Short: "Generate server boilerplate",
+	Short: "Generate backend directories and files for a Go web application",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 4 {
 			fmt.Println("❌ Error: Missing arguments")
