@@ -103,6 +103,12 @@ your-project/
 - Efficient router
 - Middleware support
 
+#### Iris
+- Fast, full-featured web framework
+- Built-in MVC support
+- Rich routing capabilities
+- Extensive middleware ecosystem
+
 ### Databases
 
 - **PostgreSQL**: Advanced open-source database
