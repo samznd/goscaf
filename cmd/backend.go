@@ -20,7 +20,7 @@ var BackendCmd = &cobra.Command{
 		if len(args) < 4 {
 			fmt.Println("❌ Error: Missing arguments")
 			fmt.Printf("Received args: %v\n", args)
-			return
+			os.Exit(1)
 		}
 
 		projectPath, backend, database, orm := args[0], args[1], args[2], args[3]
@@ -45,7 +45,7 @@ var BackendCmd = &cobra.Command{
 
 		if databaseContent == "None" {
 			fmt.Printf("Error: Invalid database configuration. Database: %s, ORM: %s\n", database, orm)
-			return
+			os.Exit(1)
 		}
 
 		envContent := `DB_USER=postgres
@@ -98,7 +98,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 
 	default:
 		fmt.Printf("❌ Error: Invalid backend: %s\n", backend)
-		return
+		os.Exit(1)
 	}
 
 	// Install database driver
@@ -112,7 +112,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 
 	default:
 		fmt.Printf("❌ Error: Invalid database: %s\n", database)
-		return
+		os.Exit(1)
 	}
 
 	// Install ORM if selected
@@ -130,7 +130,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 
 		default:
 			fmt.Printf("❌ Error: Invalid database: %s\n", database)
-			return
+			os.Exit(1)
 		}
 	case "xorm":
 		runCommand(projectPath, "go get xorm.io/xorm")
@@ -139,7 +139,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 		runCommand(projectPath, "go get entgo.io/ent/cmd/ent")
 	default:
 		fmt.Printf("❌ Error: Invalid ORM: %s\n", orm)
-		return
+		os.Exit(1)
 	}
 
 	// Install common utilities
@@ -163,6 +163,6 @@ func runCommand(dir, command string) {
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("❌ Error executing command '%s': %v\n", command, err)
-		return
+		os.Exit(1)
 	}
 }
