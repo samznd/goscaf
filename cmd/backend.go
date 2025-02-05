@@ -29,7 +29,7 @@ var BackendCmd = &cobra.Command{
 		directories := []string{
 			"cmd", "config", "internal", "internal/middleware",
 			"internal/models", "internal/repositories", "internal/services",
-			"internal/handlers", "internal/routes", "pkg", "scripts",
+			"internal/handlers", "internal/routes", "pkg/utils", "scripts",
 		}
 
 		for _, dir := range directories {

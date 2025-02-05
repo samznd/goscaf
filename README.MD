@@ -62,7 +62,6 @@ your-project/
 ├── config/
 │   └── database.go      # Database configuration
 ├── internal/
-│   ├── database/        # Database connection setup
 │   ├── middleware/      # HTTP middleware
 │   ├── models/          # Data models
 │   ├── repositories/    # Data access layer
@@ -70,6 +69,7 @@ your-project/
 │   ├── handlers/        # HTTP request handlers
 │   └── routes/          # Route definitions
 ├── pkg/                 # Public library code
+│   ├── utils/           # Utility functions
 ├── scripts/             # Build and deployment scripts
 └── .env                 # Environment variables
 ```
@@ -80,7 +80,6 @@ your-project/
   - `main.go`: The entry point of the application
 - `config/`: Configuration file templates or default configs
 - `internal/`: Private application and library code
-  - `database/`: Database connection and configuration
   - `middleware/`: HTTP middleware components
   - `models/`: Application data models
   - `repositories/`: Data access layer implementation
