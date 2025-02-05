@@ -1,5 +1,8 @@
 # GoWeb CLI
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/samznd/goweb.svg)](https://pkg.go.dev/github.com/samznd/goweb)
+
+
 A command-line interface tool for quickly generating Go web application boilerplate code with modern project structure and best practices.
 
 ## Features
@@ -16,7 +19,6 @@ A command-line interface tool for quickly generating Go web application boilerpl
 ### Prerequisites
 
 - Go 1.16 or higher
-- Git
 
 ### Installation
 ```bash
