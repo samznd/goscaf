@@ -1,6 +1,7 @@
 # GoWeb CLI
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/samznd/goweb.svg)](https://pkg.go.dev/github.com/samznd/goweb)
+[![GitHub release](https://img.shields.io/github/v/release/samznd/goweb.svg)](https://github.com/samznd/goweb/releases)
 
 
 A command-line interface tool for quickly generating Go web application boilerplate code with modern project structure and best practices.
