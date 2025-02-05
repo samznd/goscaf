@@ -6,42 +6,42 @@ import (
 )
 
 func getMainFile(backend string, projectName string) string {
-	if backend == "Fiber" {
+	switch strings.ToLower(backend) {
+	case "fiber":
 		return fmt.Sprintf(`package main
 
-		import (
-			"fmt"
-			"log"
-			"github.com/gofiber/fiber/v2"
-			"%s/config/database"
-		)
-		
-		func main() {
-			database.Connect()
-			app := fiber.New()
-		
-			// Define routes
-			app.Get("/ping", func(c *fiber.Ctx) error {
-				return c.JSON(fiber.Map{"message": "pong"})
-			})
-		
-			log.Println("🚀 Fiber server is running on http://localhost:3000")
-			app.Listen(":3000")
-		}`, projectName)
-	}
-	return fmt.Sprintf(`package main
+import (
+    "log"
+    "github.com/gofiber/fiber/v2"
+    "%s/config"
+)
+
+func main() {
+    config.Connect()
+    app := fiber.New()
+
+    // Define routes
+    app.Get("/ping", func(c *fiber.Ctx) error {
+        return c.JSON(fiber.Map{"message": "pong"})
+    })
+
+    log.Println("🚀 Fiber server is running on http://localhost:3000")
+    app.Listen(":3000")
+}`, projectName)
+	case "gin":
+		return fmt.Sprintf(`package main
 
 import (
     "fmt"
     "log"
     "net/http"
     "github.com/gin-gonic/gin"
-	"%s/config/database"
+    "%s/config"
 )
 
 func main() {
-	database.Connect()
-	
+    config.Connect()
+
     r := gin.Default()
 
     // Define routes
@@ -52,6 +52,9 @@ func main() {
     log.Println("🚀 Gin server is running on http://localhost:3000")
     r.Run(":3000")
 }`, projectName)
+	default:
+		return ""
+	}
 }
 
 func getDatabaseFile(database string, orm string) string {
@@ -61,7 +64,7 @@ func getDatabaseFile(database string, orm string) string {
 
 	switch strings.ToLower(database) {
 	case "postgres":
-		return `package database
+		return `package config
 
 import (
     "database/sql"
@@ -97,16 +100,9 @@ func Connect() {
 
     log.Println("✅ Connected to the database successfully!")
 }
-
-func getEnv(key, defaultValue string) string {
-    value, exists := os.LookupEnv(key)
-    if !exists {
-        return defaultValue
-    }
-    return value
-}`
+`
 	case "mysql":
-		return `package database
+		return `package config
 
 import (
     "database/sql"
@@ -142,7 +138,7 @@ func Connect() {
     log.Println("✅ Connected to the database successfully!")
 }`
 	case "sqlite":
-		return `package database
+		return `package config
 
 import (
     "database/sql"
@@ -169,14 +165,6 @@ func Connect() {
     }
 
     log.Println("✅ Connected to the database successfully!")
-}
-
-func getEnv(key, defaultValue string) string {
-    value, exists := os.LookupEnv(key)
-    if !exists {
-        return defaultValue
-    }
-    return value
 }`
 	default:
 		fmt.Printf("Warning: Unknown database type '%s'\n", database)
@@ -191,7 +179,7 @@ func SetupORM(orm string, database string) string {
 	if ormLower == "gorm" {
 		switch dbLower {
 		case "postgres":
-			return `package database
+			return `package config
 
 import (
     "fmt"
@@ -222,7 +210,7 @@ func Connect() {
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
 		case "mysql":
-			return `package database
+			return `package config
 
 import (
     "fmt"
@@ -253,7 +241,7 @@ func Connect() {
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
 		case "sqlite":
-			return `package database
+			return `package config
 
 import (
     "gorm.io/driver/sqlite"
@@ -279,7 +267,7 @@ func Connect() {
 	} else if ormLower == "xorm" {
 		switch dbLower {
 		case "postgres":
-			return `package database
+			return `package config
 
 import (
     "fmt"
@@ -314,7 +302,7 @@ func Connect() {
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
 		case "mysql":
-			return `package database
+			return `package config
 
 import (
     "fmt"
@@ -349,7 +337,7 @@ func Connect() {
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
 		case "sqlite":
-			return `package database
+			return `package config
 
 import (
     "log"
@@ -379,7 +367,7 @@ func Connect() {
 	} else if ormLower == "ent" {
 		switch dbLower {
 		case "postgres":
-			return `package database
+			return `package config
 
 import (
     "context"
@@ -415,7 +403,7 @@ func Connect() {
     log.Println("✅ Connected to the PostgreSQL database successfully!")
 }`
 		case "mysql":
-			return `package database
+			return `package config
 
 import (
     "context"
@@ -451,7 +439,7 @@ func Connect() {
     log.Println("✅ Connected to the MySQL database successfully!")
 }`
 		case "sqlite":
-			return `package database
+			return `package config
 
 import (
     "context"
@@ -481,4 +469,20 @@ func Connect() {
 		}
 	}
 	return "None"
+}
+
+func getUtilsFile() string {
+	return `package utils
+
+import (
+    "os"
+)
+
+func getEnv(key, fallback string) string {
+    value, exists := os.LookupEnv(key)
+    if !exists {
+        return fallback
+    }
+    return value
+}`
 }

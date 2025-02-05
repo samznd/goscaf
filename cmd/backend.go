@@ -27,7 +27,7 @@ var BackendCmd = &cobra.Command{
 
 		// Create directories
 		directories := []string{
-			"cmd", "config", "internal", "internal/database", "internal/middleware",
+			"cmd", "config", "internal", "internal/middleware",
 			"internal/models", "internal/repositories", "internal/services",
 			"internal/handlers", "internal/routes", "pkg", "scripts",
 		}
@@ -63,6 +63,9 @@ DB_NAME=mydb`
 		}
 		if err := utils.CreateFile(filepath.Join(projectPath, ".env"), envContent); err != nil {
 			fmt.Printf("Error creating .env: %v\n", err)
+		}
+		if err := utils.CreateFile(filepath.Join(projectPath, "pkg/utils", "env_utils.go"), "module "+projectPath); err != nil {
+			fmt.Printf("Error creating env_utils.go: %v\n", err)
 		}
 
 		fmt.Println("✅ Backend files generated!")
