@@ -74,20 +74,6 @@ your-project/
 └── .env                 # Environment variables
 ```
 
-## Directory Structure Explanation
-
-- `cmd/`: Contains the main applications for the project
-  - `main.go`: The entry point of the application
-- `config/`: Configuration file templates or default configs
-- `internal/`: Private application and library code
-  - `middleware/`: HTTP middleware components
-  - `models/`: Application data models
-  - `repositories/`: Data access layer implementation
-  - `services/`: Business logic implementation
-  - `handlers/`: HTTP request handlers
-  - `routes/`: Route definitions and setup
-- `pkg/`: Library code that's safe to use by external applications
-- `scripts/`: Scripts for development, CI/CD, etc.
 
 ## Supported Technologies
 
