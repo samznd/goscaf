@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/samznd/goweb/pkg/utils"
+	"github.com/samznd/goscaf/pkg/utils"
 
 	"github.com/spf13/cobra"
 )

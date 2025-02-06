@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/samznd/goweb/cmd"
+	"github.com/samznd/goscaf/cmd"
 
 	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{
-	Use:   "goweb",
+	Use:   "goscaf",
 	Short: "A CLI to generate Go web application boilerplate",
 }
 

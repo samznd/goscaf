@@ -1,10 +1,10 @@
-# GoWeb CLI
+# GoScaf CLI
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/samznd/goweb.svg)](https://pkg.go.dev/github.com/samznd/goweb)
-[![GitHub release](https://img.shields.io/github/v/release/samznd/goweb.svg)](https://github.com/samznd/goweb/releases)
+[![Go Reference](https://pkg.go.dev/badge/github.com/samznd/goscaf.svg)](https://pkg.go.dev/github.com/samznd/goscaf)
+[![GitHub release](https://img.shields.io/github/v/release/samznd/goscaf.svg)](https://github.com/samznd/goscaf/releases)
 
 
-A command-line interface tool for quickly generating Go web application boilerplate code with modern project structure and best practices.
+A command-line interface tool for quickly generating Go web application boilerplate code with a solid scaffolding structure and best practices.
 
 ## Features
 
@@ -23,7 +23,7 @@ A command-line interface tool for quickly generating Go web application boilerpl
 
 ### Installation
 ```bash
- go install github.com/samznd/goweb@latest
+ go install github.com/samznd/goscaf@latest
  ```
 
 ## Getting Started.
@@ -31,7 +31,7 @@ A command-line interface tool for quickly generating Go web application boilerpl
 ### Create a new project
 
 ```bash
-goweb init
+goscaf init
 ```
 
 This will start an interactive prompt asking for:
@@ -45,7 +45,7 @@ This will start an interactive prompt asking for:
 ### Example
 
 ```bash
-$ goweb init
+$ goscaf init
 ? What is your project name? mywebapp
 ? Choose your web framework: Fiber
 ? Choose your database system: Postgres
@@ -134,8 +134,8 @@ your-project/
 ### Building from source
 
 ```bash
-git clone https://github.com/yourusername/goweb.git
-cd goweb
+git clone https://github.com/yourusername/goscaf.git
+cd goscaf
 go build
 ```
 
