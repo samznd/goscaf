@@ -149,17 +149,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Cobra](https://github.com/spf13/cobra)
 - [Survey](https://github.com/AlecAivazis/survey)
 
-## Support
-
-If you have any questions or need help, please:
-1. Check the readme again
-2. Open an issue
-3. Start a discussion
-
 ## Roadmap
 
 - [x] Add support for more web frameworks
-- [ ] Add Docker configuration
+- [x] Add Docker configuration
 - [ ] Add GraphQL support
 
  
