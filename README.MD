@@ -159,9 +159,7 @@ If you have any questions or need help, please:
 ## Roadmap
 
 - [x] Add support for more web frameworks
-- [ ] Include testing templates
 - [ ] Add Docker configuration
-- [ ] Generate API documentation
 - [ ] Add GraphQL support
 
  

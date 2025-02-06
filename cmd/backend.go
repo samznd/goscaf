@@ -55,7 +55,8 @@ DB_PORT=5432
 DB_NAME=mydb`
 
 		utilsContent := getUtilsFile()
-
+		dockerfileContent := getDockerFile(projectPath)
+		dockerComposeContent := getDockerComposeFile(database)
 		// Create files
 		if err := utils.CreateFile(filepath.Join(projectPath, "cmd", "main.go"), mainContent); err != nil {
 			fmt.Printf("Error creating main.go: %v\n", err)
@@ -69,9 +70,14 @@ DB_NAME=mydb`
 		if err := utils.CreateFile(filepath.Join(projectPath, "pkg/utils", "env_utils.go"), utilsContent); err != nil {
 			fmt.Printf("Error creating env_utils.go: %v\n", err)
 		}
+		if err := utils.CreateFile(filepath.Join(projectPath, "Dockerfile"), dockerfileContent); err != nil {
+			fmt.Printf("Error creating Dockerfile: %v\n", err)
+		}
+		if err := utils.CreateFile(filepath.Join(projectPath, "docker-compose.yml"), dockerComposeContent); err != nil {
+			fmt.Printf("Error creating docker-compose.yml: %v\n", err)
+		}
 
-		fmt.Println("✅ Backend files generated!")
-
+		// Create database migration script
 		// Initialize go.mod and install dependencies
 		installDependencies(projectPath, backend, database, orm)
 	},

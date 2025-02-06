@@ -540,3 +540,104 @@ func GetEnv(key, fallback string) string {
     return value
 }`
 }
+
+func getDockerFile(projectName string) string {
+	return fmt.Sprintf(`FROM golang:1.17-alpine AS builder
+
+WORKDIR /app
+
+# Copy the Go Modules manifests
+COPY go.mod go.sum ./
+
+# Download the Go module dependencies
+RUN go mod download
+
+# Copy the source code
+COPY . .
+
+# Build the Go application
+RUN go build -o %s .
+
+# Use a minimal base image
+FROM alpine:latest
+
+WORKDIR /root/
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/%s .
+
+# Expose the application port
+EXPOSE 8080
+
+# Run the application
+CMD ["./%s"]
+
+# Note: Customize the Dockerfile as needed for your specific project requirements.
+# For example, you may need to add environment variables, additional dependencies, or other configurations.
+`, projectName, projectName, projectName)
+}
+
+func getDockerComposeFile(database string) string {
+	var dbService string
+
+	switch database {
+	case "Postgres":
+		dbService = `
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+`
+	case "MySQL":
+		dbService = `
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+`
+	case "SQLite":
+		dbService = `
+  db:
+    image: nouchka/sqlite3
+    volumes:
+      - db-data:/data
+`
+
+	default:
+		dbService = ""
+	}
+
+	return fmt.Sprintf(`version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=mydb
+%s
+
+volumes:
+  db-data:
+`, dbService)
+}
