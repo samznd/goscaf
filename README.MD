@@ -9,7 +9,7 @@ A command-line interface tool for quickly generating Go web application boilerpl
 ## Features
 
 - 🚀 Quick project scaffolding
-- 🎯 Multiple web framework options (Fiber/Gin/Echo/Chi)
+- 🎯 Multiple web framework options (Fiber/Gin/Echo/Chi/Iris)
 - 🗄️ Database integration (Postgres/MySQL/SQLite)
 - 🔧 ORM support (GORM/XORM/Ent)
 - 📁 Standard project layout
@@ -37,7 +37,7 @@ goscaf init
 This will start an interactive prompt asking for:
 
 1. Project name
-2. Web framework selection (Fiber/Gin/Echo/Chi)
+2. Web framework selection (Fiber/Gin/Echo/Chi/Iris)
 3. Database system (Postgres/MySQL/SQLite)
 4. ORM preference (Yes/No)
 5. If Yes to ORM, choose between GORM/XORM/Ent
