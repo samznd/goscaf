@@ -9,7 +9,7 @@ A command-line interface tool for quickly generating Go web application boilerpl
 ## Features
 
 - 🚀 Quick project scaffolding
-- 🎯 Multiple web framework options (Fiber/Gin)
+- 🎯 Multiple web framework options (Fiber/Gin/Echo/Chi)
 - 🗄️ Database integration (Postgres/MySQL/SQLite)
 - 🔧 ORM support (GORM/XORM/Ent)
 - 📁 Standard project layout
