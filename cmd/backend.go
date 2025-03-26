@@ -151,6 +151,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 	// Install common utilities
 	runCommand(projectPath, "go get github.com/joho/godotenv")
 	runCommand(projectPath, "go get golang.org/x/crypto")
+	runCommand(projectPath, "github.com/joho/godotenv")
 
 	// Fix missing dependencies
 	runCommand(projectPath, "go get github.com/mattn/go-isatty@v0.0.20")
