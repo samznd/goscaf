@@ -34,7 +34,6 @@ func main() {
 		return fmt.Sprintf(`package main
 
 import (
-    "fmt"
     "log"
     "net/http"
     "github.com/gin-gonic/gin"
@@ -154,11 +153,11 @@ import (
 var DB *sql.DB
 
 func Connect() {
-    dbHost := os.GetEnv("DB_HOST", "localhost")
-    dbPort := os.GetEnv("DB_PORT", "5432")
-    dbUser := os.GetEnv("DB_USER", "postgres")
-    dbPassword := os.GetEnv("DB_PASSWORD", "password")
-    dbName := os.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT", "5432")
+    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -190,11 +189,11 @@ import (
 var DB *sql.DB
 
 func Connect() {
-    dbHost := os.GetEnv("DB_HOST", "localhost")
-    dbPort := os.GetEnv("DB_PORT", "3306")
-    dbUser := os.GetEnv("DB_USER", "root")
-    dbPassword := os.GetEnv("DB_PASSWORD", "password")
-    dbName := os.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -225,7 +224,7 @@ import (
 var DB *sql.DB
 
 func Connect() {
-    dbName := os.GetEnv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     var err error
     DB, err = sql.Open("sqlite3", dbName)
@@ -267,11 +266,11 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "5432")
-    dbUser := utils.GetEnv("DB_USER", "postgres")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT", "5432")
+    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -297,11 +296,11 @@ import (
 var DB *gorm.DB
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "3306")
-    dbUser := utils.GetEnv("DB_USER", "root")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -321,12 +320,13 @@ import (
     "gorm.io/driver/sqlite"
     "gorm.io/gorm"
     "log"
+    "os"
 )
 
 var DB *gorm.DB
 
 func Connect() {
-    dbName := utils.GetEnv("DB_NAME", "mydb.db")
+    dbName := os.Getenv("DB_NAME", "mydb.db")
 
     var err error
     DB, err = gorm.Open(sqlite.Open(dbName), &gorm.Config{})
@@ -345,6 +345,7 @@ func Connect() {
 import (
     "fmt"
     "log"
+    "os"
     "xorm.io/xorm"
     _ "github.com/lib/pq"
 )
@@ -352,11 +353,11 @@ import (
 var DB *xorm.Engine
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "5432")
-    dbUser := utils.GetEnv("DB_USER", "postgres")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT", "5432")
+    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -379,6 +380,7 @@ func Connect() {
 import (
     "fmt"
     "log"
+    "os"
     "xorm.io/xorm"
     _ "github.com/go-sql-driver/mysql"
 )
@@ -386,11 +388,11 @@ import (
 var DB *xorm.Engine
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "3306")
-    dbUser := utils.GetEnv("DB_USER", "root")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -412,6 +414,7 @@ func Connect() {
 
 import (
     "log"
+    "os"
     "xorm.io/xorm"
     _ "github.com/mattn/go-sqlite3"
 )
@@ -419,7 +422,7 @@ import (
 var DB *xorm.Engine
 
 func Connect() {
-    dbName := utils.GetEnv("DB_NAME", "mydb.db")
+    dbName := os.Getenv("DB_NAME")
 
     var err error
     DB, err = xorm.NewEngine("sqlite3", dbName)
@@ -450,11 +453,11 @@ import (
 var DB *ent.Client
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "5432")
-    dbUser := utils.GetEnv("DB_USER", "postgres")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT", "5432")
+    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -485,11 +488,11 @@ import (
 var DB *ent.Client
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "3306")
-    dbUser := utils.GetEnv("DB_USER", "root")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.Getenv("DB_HOST")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbName := os.Getenv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -519,7 +522,7 @@ import (
 var DB *ent.Client
 
 func Connect() {
-    dbName := utils.GetEnv("DB_NAME", "mydb.db")
+    dbName := os.Getenv("DB_NAME", "mydb.db")
 
     client, err := ent.Open("sqlite3", dbName)
     if err != nil {
