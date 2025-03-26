@@ -157,7 +157,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT", "5432")
     dbUser := os.Getenv("DB_USER", "postgres")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -193,7 +193,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT")
     dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -224,7 +224,7 @@ import (
 var DB *sql.DB
 
 func Connect() {
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     var err error
     DB, err = sql.Open("sqlite3", dbName)
@@ -270,7 +270,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT", "5432")
     dbUser := os.Getenv("DB_USER", "postgres")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -300,7 +300,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT")
     dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -357,7 +357,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT", "5432")
     dbUser := os.Getenv("DB_USER", "postgres")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -392,7 +392,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT")
     dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -457,7 +457,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT", "5432")
     dbUser := os.Getenv("DB_USER", "postgres")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -492,7 +492,7 @@ func Connect() {
     dbPort := os.Getenv("DB_PORT")
     dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
-    dbName := os.Getenv("DB_NAME", "mydb")
+    dbName := os.Getenv("DB_NAME")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True",
         dbUser, dbPassword, dbHost, dbPort, dbName)
