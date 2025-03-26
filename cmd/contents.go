@@ -123,20 +123,21 @@ func main() {
 	}
 }
 
-func getDatabaseFile(database string, orm string) string {
+func getDatabaseFile(database string, orm string, projectName string) string {
 	if strings.ToLower(orm) != "none" {
 		return SetupORM(orm, database)
 	}
 
+	template := ""
 	switch strings.ToLower(database) {
 	case "postgres":
-		return `package config
+		template = `package config
 
 import (
     "database/sql"
     "fmt"
     "log"
-    "test/pkg/utils"
+    "{projectName}/pkg/utils"
     _ "github.com/lib/pq"
 )
 
@@ -164,16 +165,16 @@ func Connect() {
     }
 
     log.Println("✅ Connected to the database successfully!")
-}
-`
+}`
 	case "mysql":
-		return `package config
+		template = `package config
 
 import (
     "database/sql"
     "fmt"
     "log"   
-    "github.com/go-sql-driver/mysql"
+    "{projectName}/pkg/utils"
+    _ "github.com/go-sql-driver/mysql"
 )
     
 var DB *sql.DB
@@ -202,16 +203,16 @@ func Connect() {
     log.Println("✅ Connected to the database successfully!")
 }`
 	case "sqlite":
-		return `package config
+		template = `package config
 
 import (
     "database/sql"
     "log"
+    "{projectName}/pkg/utils"
     _ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
-
 
 func Connect() {
     dbName := utils.GetEnv("DB_NAME", "mydb")
@@ -233,6 +234,8 @@ func Connect() {
 		fmt.Printf("Warning: Unknown database type '%s'\n", database)
 		return "None"
 	}
+
+	return strings.ReplaceAll(template, "{projectName}", projectName)
 }
 
 func SetupORM(orm string, database string) string {

@@ -41,7 +41,7 @@ var BackendCmd = &cobra.Command{
 
 		// Generate files
 		mainContent := getMainFile(backend, projectPath)
-		databaseContent := getDatabaseFile(database, orm)
+		databaseContent := getDatabaseFile(database, orm, projectPath)
 
 		if databaseContent == "None" {
 			fmt.Printf("Error: Invalid database configuration. Database: %s, ORM: %s\n", database, orm)
