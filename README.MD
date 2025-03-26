@@ -129,7 +129,6 @@ your-project/
 ### Requirements
 
 - Go 1.16+
-- Git
 
 ### Building from source
 
