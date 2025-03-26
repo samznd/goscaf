@@ -14,9 +14,11 @@ import (
     "log"
     "github.com/gofiber/fiber/v2"
     "%s/config"
+    "%s/pkg/utils"
 )
 
 func main() {
+    utils.InitialEnv()
     config.Connect()
     app := fiber.New()
 
@@ -27,7 +29,7 @@ func main() {
 
     log.Println("🚀 Fiber server is running on http://localhost:3000")
     app.Listen(":3000")
-}`, projectName)
+}`, projectName, projectName)
 	case "gin":
 		return fmt.Sprintf(`package main
 
@@ -37,9 +39,11 @@ import (
     "net/http"
     "github.com/gin-gonic/gin"
     "%s/config"
+    "%s/pkg/utils"
 )
 
 func main() {
+    utils.InitialEnv()
     config.Connect()
 
     r := gin.Default()
@@ -51,7 +55,7 @@ func main() {
 
     log.Println("🚀 Gin server is running on http://localhost:3000")
     r.Run(":3000")
-}`, projectName)
+}`, projectName, projectName)
 	case "echo":
 		return fmt.Sprintf(`package main
 
@@ -59,9 +63,11 @@ import (
     "net/http"
     "github.com/labstack/echo/v4"
     "%s/config"
+    "%s/pkg/utils"
 )
 
 func main() {
+    utils.InitialEnv()
     config.Connect()
 
     e := echo.New()
@@ -72,7 +78,7 @@ func main() {
     })
 
     e.Logger.Fatal(e.Start(":3000"))
-}`, projectName)
+}`, projectName, projectName)
 	case "chi":
 		return fmt.Sprintf(`package main
 
@@ -81,9 +87,11 @@ import (
     "github.com/go-chi/chi"
     "github.com/go-chi/chi/middleware"
     "%s/config"
+    "%s/pkg/utils"
 )
 
 func main() {
+    utils.InitialEnv()
     config.Connect()
 
     r := chi.NewRouter()
@@ -97,16 +105,18 @@ func main() {
     })
 
     http.ListenAndServe(":3000", r)
-}`, projectName)
+}`, projectName, projectName)
 	case "iris":
 		return fmt.Sprintf(`package main
 
 import (
     "github.com/kataras/iris/v12"
     "%s/config"
+    "%s/pkg/utils"
 )
 
 func main() {
+    utils.InitialEnv()
     config.Connect()
 
     app := iris.New()
@@ -117,7 +127,7 @@ func main() {
     })
 
     app.Listen(":3000")
-}`, projectName)
+}`, projectName, projectName)
 	default:
 		return ""
 	}
@@ -137,18 +147,18 @@ import (
     "database/sql"
     "fmt"
     "log"
-    "{projectName}/pkg/utils"
+    "os"
     _ "github.com/lib/pq"
 )
 
 var DB *sql.DB
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "5432")
-    dbUser := utils.GetEnv("DB_USER", "postgres")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.GetEnv("DB_HOST", "localhost")
+    dbPort := os.GetEnv("DB_PORT", "5432")
+    dbUser := os.GetEnv("DB_USER", "postgres")
+    dbPassword := os.GetEnv("DB_PASSWORD", "password")
+    dbName := os.GetEnv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
         dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -173,18 +183,18 @@ import (
     "database/sql"
     "fmt"
     "log"   
-    "{projectName}/pkg/utils"
+    "os"
     _ "github.com/go-sql-driver/mysql"
 )
     
 var DB *sql.DB
 
 func Connect() {
-    dbHost := utils.GetEnv("DB_HOST", "localhost")
-    dbPort := utils.GetEnv("DB_PORT", "3306")
-    dbUser := utils.GetEnv("DB_USER", "root")
-    dbPassword := utils.GetEnv("DB_PASSWORD", "password")
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbHost := os.GetEnv("DB_HOST", "localhost")
+    dbPort := os.GetEnv("DB_PORT", "3306")
+    dbUser := os.GetEnv("DB_USER", "root")
+    dbPassword := os.GetEnv("DB_PASSWORD", "password")
+    dbName := os.GetEnv("DB_NAME", "mydb")
 
     dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
         dbUser, dbPassword, dbHost, dbPort, dbName)
@@ -208,14 +218,14 @@ func Connect() {
 import (
     "database/sql"
     "log"
-    "{projectName}/pkg/utils"
+    "os"
     _ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
 
 func Connect() {
-    dbName := utils.GetEnv("DB_NAME", "mydb")
+    dbName := os.GetEnv("DB_NAME", "mydb")
 
     var err error
     DB, err = sql.Open("sqlite3", dbName)
@@ -235,7 +245,7 @@ func Connect() {
 		return "None"
 	}
 
-	return strings.ReplaceAll(template, "{projectName}", projectName)
+	return template
 }
 
 func SetupORM(orm string, database string) string {
@@ -532,15 +542,17 @@ func getUtilsFile() string {
 	return `package utils
 
 import (
-    "os"
+	"log"
+
+	"github.com/joho/godotenv"
 )
 
-func GetEnv(key, fallback string) string {
-    value, exists := os.LookupEnv(key)
-    if !exists {
-        return fallback
-    }
-    return value
+func InitialEnv() error {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	return nil
 }`
 }
 
