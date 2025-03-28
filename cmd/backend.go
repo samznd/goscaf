@@ -144,7 +144,6 @@ func installDependencies(projectPath, backend string, database string, orm strin
 		runCommand(projectPath, "go get entgo.io/ent")
 		runCommand(projectPath, "go get entgo.io/ent/cmd/ent")
 	default:
-		fmt.Printf("❌ Error: Invalid ORM: %s\n", orm)
 		os.Exit(1)
 	}
 
