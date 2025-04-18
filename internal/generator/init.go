@@ -1,4 +1,4 @@
-package cmd
+package generator
 
 import (
 	"fmt"
@@ -62,7 +62,7 @@ var InitCmd = &cobra.Command{
 		projectPath := filepath.Join(".", projectName)
 		os.MkdirAll(projectPath, os.ModePerm)
 
-		BackendCmd.Run(cmd, []string{projectPath, backend, database, orm})
+		ScaffoldBackendCmd.Run(cmd, []string{projectPath, backend, database, orm})
 
 		fmt.Println("✅ Project initialized successfully!")
 	},

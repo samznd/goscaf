@@ -1,4 +1,4 @@
-package cmd
+package generator
 
 import (
 	"fmt"
@@ -132,7 +132,7 @@ func main() {
 	}
 }
 
-func getDatabaseFile(database string, orm string, projectName string) string {
+func getDatabaseFile(database string, orm string) string {
 	if strings.ToLower(orm) != "none" {
 		return SetupORM(orm, database)
 	}
