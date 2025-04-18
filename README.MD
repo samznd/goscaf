@@ -4,18 +4,18 @@
 [![GitHub release](https://img.shields.io/github/v/release/samznd/goscaf.svg)](https://github.com/samznd/goscaf/releases)
 
 
-A command-line interface tool for quickly generating Go web application boilerplate code with a solid scaffolding structure and best practices.
+**GoScaf** is a powerful command-line tool for bootstrapping Go web applications with clean architecture, flexible technology combinations, and best practices baked in.
 
-## Features
+## 🚀 Features
 
-- 🚀 Quick project scaffolding
-- 🎯 Multiple web framework options (Fiber/Gin/Echo/Chi/Iris)
-- 🗄️ Database integration (Postgres/MySQL/SQLite)
-- 🔧 ORM support (GORM/XORM/Ent)
-- 📁 Standard project layout
-- 🔄 Automated dependency installation
+- Quick project scaffolding with interactive CLI
+- Modular selection of Web Framework, Database, and ORM
+- Clean and extensible project structure
+- Built-in support for environment configs and Docker
+- Automated dependency installation
+- Consistent and idiomatic Go code generation
 
-## Installation
+## 📦 Installation
 
 ### Prerequisites
 
@@ -23,14 +23,12 @@ A command-line interface tool for quickly generating Go web application boilerpl
 
 ### Installation
 ```bash
- go install github.com/samznd/goscaf@latest
- ```
+go install github.com/samznd/goscaf@latest
 
 ## Getting Started.
 
 ### Create a new project
 
-```bash
 goscaf init
 ```
 

@@ -1,4 +1,4 @@
-package cmd
+package generator
 
 import (
 	"fmt"
@@ -12,8 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// backendCmd represents the backend command
-var BackendCmd = &cobra.Command{
+var ScaffoldBackendCmd = &cobra.Command{
 	Use:   "backend",
 	Short: "Generate backend directories and files for a Go web application",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -41,7 +40,7 @@ var BackendCmd = &cobra.Command{
 
 		// Generate files
 		mainContent := getMainFile(backend, projectPath)
-		databaseContent := getDatabaseFile(database, orm, projectPath)
+		databaseContent := getDatabaseFile(database, orm)
 
 		if databaseContent == "None" {
 			fmt.Printf("Error: Invalid database configuration. Database: %s, ORM: %s\n", database, orm)
