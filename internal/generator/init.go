@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/samznd/goscaf/pkg/templates"
 	"github.com/spf13/cobra"
 )
 
@@ -63,7 +64,7 @@ var InitCmd = &cobra.Command{
 		os.MkdirAll(projectPath, os.ModePerm)
 
 		ScaffoldBackendCmd.Run(cmd, []string{projectPath, backend, database, orm})
-
+		templates.InitTemplateCmd.Run(cmd, []string{projectPath, backend, orm})
 		fmt.Println("✅ Project initialized successfully!")
 	},
 }

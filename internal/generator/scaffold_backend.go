@@ -76,7 +76,6 @@ DB_NAME=mydb`
 			fmt.Printf("Error creating docker-compose.yml: %v\n", err)
 		}
 
-		// Create database migration script
 		// Initialize go.mod and install dependencies
 		installDependencies(projectPath, backend, database, orm)
 	},
@@ -88,18 +87,25 @@ func installDependencies(projectPath, backend string, database string, orm strin
 
 	fmt.Println("📦 Installing dependencies...")
 
+	// Install common utilities
+	runCommand(projectPath, "go get github.com/joho/godotenv")
+	runCommand(projectPath, "go get golang.org/x/crypto")
+
+	// Fix missing dependencies
+	runCommand(projectPath, "go get github.com/mattn/go-isatty@v0.0.20")
+
 	// Install backend framework
 	switch strings.ToLower(backend) {
 	case "fiber":
-		runCommand(projectPath, "go get github.com/gofiber/fiber/v2")
+		runCommand(projectPath, "go get github.com/gofiber/fiber/v3")
 	case "gin":
 		runCommand(projectPath, "go get github.com/gin-gonic/gin")
 	case "echo":
 		runCommand(projectPath, "go get github.com/labstack/echo/v4")
 	case "chi":
-		runCommand(projectPath, "go get github.com/go-chi/chi")
+		runCommand(projectPath, "go get github.com/go-chi/chi/v5")
 	case "iris":
-		runCommand(projectPath, "go get github.com/kataras/iris/v12")
+		runCommand(projectPath, "go get github.com/kataras/iris/v12@latest")
 
 	default:
 		fmt.Printf("❌ Error: Invalid backend: %s\n", backend)
@@ -142,16 +148,7 @@ func installDependencies(projectPath, backend string, database string, orm strin
 	case "ent":
 		runCommand(projectPath, "go get entgo.io/ent")
 		runCommand(projectPath, "go get entgo.io/ent/cmd/ent")
-	default:
-		os.Exit(1)
 	}
-
-	// Install common utilities
-	runCommand(projectPath, "go get github.com/joho/godotenv")
-	runCommand(projectPath, "go get golang.org/x/crypto")
-
-	// Fix missing dependencies
-	runCommand(projectPath, "go get github.com/mattn/go-isatty@v0.0.20")
 
 	// Tidy up modules and ensure all dependencies are properly downloaded
 	runCommand(projectPath, "go mod tidy")

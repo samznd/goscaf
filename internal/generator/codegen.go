@@ -12,9 +12,10 @@ func getMainFile(backend string, projectName string) string {
 
 import (
     "log"
-    "github.com/gofiber/fiber/v2"
+    "github.com/gofiber/fiber/v3"
     "%s/config"
     "%s/pkg/utils"
+    "%s/internal/routes"
 )
 
 func main() {
@@ -23,13 +24,12 @@ func main() {
     app := fiber.New()
 
     // Define routes
-    app.Get("/ping", func(c *fiber.Ctx) error {
-        return c.JSON(fiber.Map{"message": "pong"})
-    })
+	api := app.Group("/api/v1")
+	routes.SetupRoutes(api)
 
     log.Println("🚀 Fiber server is running on http://localhost:3000")
     app.Listen(":3000")
-}`, projectName, projectName)
+}`, projectName, projectName, projectName)
 	case "gin":
 		return fmt.Sprintf(`package main
 
@@ -39,6 +39,7 @@ import (
     "github.com/gin-gonic/gin"
     "%s/config"
     "%s/pkg/utils"
+    "%s/internal/routes"
 )
 
 func main() {
@@ -48,13 +49,12 @@ func main() {
     r := gin.Default()
 
     // Define routes
-    r.GET("/ping", func(c *gin.Context) {
-        c.JSON(http.StatusOK, gin.H{"message": "pong"})
-    })
+	api := r.Group("/api/v1")
+	routes.SetupRoutes(api)
 
     log.Println("🚀 Gin server is running on http://localhost:3000")
     r.Run(":3000")
-}`, projectName, projectName)
+}`, projectName, projectName, projectName)
 	case "echo":
 		return fmt.Sprintf(`package main
 
@@ -63,6 +63,7 @@ import (
     "github.com/labstack/echo/v4"
     "%s/config"
     "%s/pkg/utils"
+    "%s/internal/routes"
 )
 
 func main() {
@@ -72,21 +73,21 @@ func main() {
     e := echo.New()
 
     // Define routes
-    e.GET("/ping", func(c echo.Context) error {
-        return c.JSON(http.StatusOK, map[string]string{"message": "pong"})
-    })
+	api := e.Group("/api/v1")
+	routes.SetupRoutes(api)
 
     e.Logger.Fatal(e.Start(":3000"))
-}`, projectName, projectName)
+}`, projectName, projectName, projectName)
 	case "chi":
 		return fmt.Sprintf(`package main
 
 import (
     "net/http"
-    "github.com/go-chi/chi"
-    "github.com/go-chi/chi/middleware"
+    "github.com/go-chi/chi/v5"
+    "github.com/go-chi/chi/v5/middleware"
     "%s/config"
     "%s/pkg/utils"
+    "%s/internal/routes"
 )
 
 func main() {
@@ -97,14 +98,10 @@ func main() {
     r.Use(middleware.Logger)
 
     // Define routes
-    r.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
-        w.Header().Set("Content-Type", "application/json")
-        w.WriteHeader(http.StatusOK)
-        w.Write([]byte(`+"`{\"message\": \"pong\"}`"+`))
-    })
+    routes.SetupRoutes(r)
 
     http.ListenAndServe(":3000", r)
-}`, projectName, projectName)
+}`, projectName, projectName, projectName)
 	case "iris":
 		return fmt.Sprintf(`package main
 
@@ -112,6 +109,7 @@ import (
     "github.com/kataras/iris/v12"
     "%s/config"
     "%s/pkg/utils"
+    "%s/internal/routes"
 )
 
 func main() {
@@ -121,12 +119,10 @@ func main() {
     app := iris.New()
 
     // Define routes
-    app.Get("/ping", func(ctx iris.Context) {
-        ctx.JSON(iris.Map{"message": "pong"})
-    })
+    routes.SetupRoutes()
 
     app.Listen(":3000")
-}`, projectName, projectName)
+}`, projectName, projectName, projectName)
 	default:
 		return ""
 	}
@@ -154,8 +150,8 @@ var DB *sql.DB
 
 func Connect() {
     dbHost := os.Getenv("DB_HOST")
-    dbPort := os.Getenv("DB_PORT", "5432")
-    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
     dbName := os.Getenv("DB_NAME")
 
@@ -267,8 +263,8 @@ var DB *gorm.DB
 
 func Connect() {
     dbHost := os.Getenv("DB_HOST")
-    dbPort := os.Getenv("DB_PORT", "5432")
-    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
     dbName := os.Getenv("DB_NAME")
 
@@ -354,8 +350,8 @@ var DB *xorm.Engine
 
 func Connect() {
     dbHost := os.Getenv("DB_HOST")
-    dbPort := os.Getenv("DB_PORT", "5432")
-    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
     dbName := os.Getenv("DB_NAME")
 
@@ -454,8 +450,8 @@ var DB *ent.Client
 
 func Connect() {
     dbHost := os.Getenv("DB_HOST")
-    dbPort := os.Getenv("DB_PORT", "5432")
-    dbUser := os.Getenv("DB_USER", "postgres")
+    dbPort := os.Getenv("DB_PORT")
+    dbUser := os.Getenv("DB_USER")
     dbPassword := os.Getenv("DB_PASSWORD")
     dbName := os.Getenv("DB_NAME")
 
