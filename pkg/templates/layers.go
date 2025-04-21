@@ -110,7 +110,7 @@ func NewRepository() Repository {
 }
 
 func (r *RepoImpl) GetMessage() (string, error) {
-	return " data from repository"
+	return "data from repository", nil
 }
 `
 }

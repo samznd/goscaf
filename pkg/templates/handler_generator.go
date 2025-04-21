@@ -27,7 +27,7 @@ func NewHandler(s services.Service) *Handler {
 	return &Handler{service: s}
 }
 
-func (h *Handler) Get(c *fiber.Ctx) error {
+func (h *Handler) Get(c fiber.Ctx) error {
 	message, err := %s
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
