@@ -24,7 +24,7 @@ var InitTemplateCmd = &cobra.Command{
 		repositoryTemplate := RepositoryTemplate(strings.ToLower(orm))
 		serviceTemplate := ServiceTemplate(projectName)
 		handlerTemplate := HandlerGenerator(projectName, strings.ToLower(backend), strings.ToLower(orm))
-		setupRoutesTemplate := SetupRoutesTemplate(projectName, backend)
+		setupRoutesTemplate := SetupRoutesTemplate(projectName, strings.ToLower(backend))
 		projectPath := filepath.Join(".", projectName)
 		utils.CreateTemplate("repositories", "repository.go", repositoryTemplate, projectPath)
 		utils.CreateTemplate("services", "service.go", serviceTemplate, projectPath)

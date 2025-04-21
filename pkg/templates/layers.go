@@ -45,7 +45,7 @@ import (
 )
 
 type Repository interface {
-	GetMessage() string
+	GetMessage() (string, error)
 }
 
 type RepoImpl struct {
@@ -56,7 +56,7 @@ func NewRepository(engine *xorm.Engine) Repository {
 	return &RepoImpl{engine: engine}
 }
 
-func (r *RepoImpl) GetMessage() string {
+func (r *RepoImpl) GetMessage() (string, error) {
 	// Example XORM usage
 	result, err := r.engine.QueryString("SELECT 'data from repository'")
 	if err != nil || len(result) == 0 {
@@ -98,7 +98,7 @@ package repositories
 import "database/sql"
 
 type Repository interface {
-	GetMessage() string
+	GetMessage() (string, error)
 }
 
 type RepoImpl struct{
@@ -109,7 +109,7 @@ func NewRepository() Repository {
 	return &RepoImpl{}
 }
 
-func (r *RepoImpl) GetMessage() string {
+func (r *RepoImpl) GetMessage() (string, error) {
 	return " data from repository"
 }
 `
@@ -122,7 +122,7 @@ package services
 import "%s/internal/repositories"
 
 type Service interface {
-	GetMessage() string
+	GetMessage() (string, error)
 }
 
 type ServiceImpl struct {
@@ -130,12 +130,13 @@ type ServiceImpl struct {
 }
 
 func NewService(r repositories.Repository) Service {
-	return &Service{repo: r}
+	return &ServiceImpl{repo: r}
 }
 
-func (s *Service) GetMessage() string {
+func (s *ServiceImpl) GetMessage() (string, error) {
 	return s.repo.GetMessage()
 }
+
 `, projectName)
 }
 
@@ -286,7 +287,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
-func SetupRoutes(app *fiber.App, h *handlers.Handler) {
+func SetupRoutes(app fiber.Router, h *handlers.Handler) {
 	api := app.Group("/api")
 	api.Get("/message", h.Get)
 }

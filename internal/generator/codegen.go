@@ -16,6 +16,7 @@ import (
     "%s/config"
     "%s/pkg/utils"
     "%s/internal/routes"
+    "%s/internal/handlers"
 )
 
 func main() {
@@ -25,11 +26,11 @@ func main() {
 
     // Define routes
 	api := app.Group("/api/v1")
-	routes.SetupRoutes(api)
+	routes.SetupRoutes(api, &handlers.Handler{})
 
     log.Println("🚀 Fiber server is running on http://localhost:3000")
     app.Listen(":3000")
-}`, projectName, projectName, projectName)
+}`, projectName, projectName, projectName, projectName)
 	case "gin":
 		return fmt.Sprintf(`package main
 
@@ -40,6 +41,7 @@ import (
     "%s/config"
     "%s/pkg/utils"
     "%s/internal/routes"
+    "%s/internal/handlers"
 )
 
 func main() {
@@ -50,11 +52,11 @@ func main() {
 
     // Define routes
 	api := r.Group("/api/v1")
-	routes.SetupRoutes(api)
+	routes.SetupRoutes(api, &handlers.Handler{})
 
     log.Println("🚀 Gin server is running on http://localhost:3000")
     r.Run(":3000")
-}`, projectName, projectName, projectName)
+}`, projectName, projectName, projectName, projectName)
 	case "echo":
 		return fmt.Sprintf(`package main
 
@@ -64,6 +66,7 @@ import (
     "%s/config"
     "%s/pkg/utils"
     "%s/internal/routes"
+    "%s/internal/handlers"
 )
 
 func main() {
@@ -74,10 +77,10 @@ func main() {
 
     // Define routes
 	api := e.Group("/api/v1")
-	routes.SetupRoutes(api)
+	routes.SetupRoutes(api, &handlers.Handler{})
 
     e.Logger.Fatal(e.Start(":3000"))
-}`, projectName, projectName, projectName)
+}`, projectName, projectName, projectName, projectName)
 	case "chi":
 		return fmt.Sprintf(`package main
 
@@ -88,6 +91,7 @@ import (
     "%s/config"
     "%s/pkg/utils"
     "%s/internal/routes"
+    "%s/internal/handlers"
 )
 
 func main() {
@@ -98,10 +102,10 @@ func main() {
     r.Use(middleware.Logger)
 
     // Define routes
-    routes.SetupRoutes(r)
+    routes.SetupRoutes(r, &handlers.Handler{})
 
     http.ListenAndServe(":3000", r)
-}`, projectName, projectName, projectName)
+}`, projectName, projectName, projectName, projectName)
 	case "iris":
 		return fmt.Sprintf(`package main
 
@@ -110,6 +114,7 @@ import (
     "%s/config"
     "%s/pkg/utils"
     "%s/internal/routes"
+    "%s/internal/handlers"
 )
 
 func main() {
@@ -119,10 +124,10 @@ func main() {
     app := iris.New()
 
     // Define routes
-    routes.SetupRoutes()
+    routes.SetupRoutes(&app, &handlers.Handler{})
 
     app.Listen(":3000")
-}`, projectName, projectName, projectName)
+}`, projectName, projectName, projectName, projectName)
 	default:
 		return ""
 	}
