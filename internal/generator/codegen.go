@@ -36,7 +36,6 @@ func main() {
 
 import (
     "log"
-    "net/http"
     "github.com/gin-gonic/gin"
     "%s/config"
     "%s/pkg/utils"

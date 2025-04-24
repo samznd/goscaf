@@ -301,8 +301,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(router *gin.Engine, h *handlers.Handler) {
-	api := router.Group("/api")
+func SetupRoutes(api *gin.RouterGroup, h *handlers.Handler) {
 	api.GET("/message", h.Get)
 }
 `, projectName)
@@ -331,7 +330,7 @@ import (
 )
 
 func SetupRoutes(r chi.Router, h *handlers.Handler) {
-	r.Route("/api", func(api chi.Router) {
+	r.Route("/api/v1", func(api chi.Router) {
 		api.Get("/message", func(w http.ResponseWriter, r *http.Request) {
 			h.Get(w, r)
 		})
